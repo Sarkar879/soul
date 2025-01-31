@@ -14,12 +14,12 @@ from threading import Thread
 
 loop = asyncio.get_event_loop()
 
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TOKEN = os.getenv("7375766856:AAEKEeVDdcsryYx3v2_hfoCEHw0M1fx3G-Y")
 MONGO_URI = os.getenv("MONGODB_URI")
 
-FORWARD_CHANNEL_ID = -1002156421934
-CHANNEL_ID = -1002156421934
-ERROR_CHANNEL_ID = -1002156421934
+FORWARD_CHANNEL_ID = -1001826672472
+CHANNEL_ID = -1001826672472
+ERROR_CHANNEL_ID = -1001826672472
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
