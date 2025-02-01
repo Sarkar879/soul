@@ -15,8 +15,8 @@ from threading import Thread
 loop = asyncio.get_event_loop()
 
 # Fetch environment variables securely
-TOKEN = os.getenv("TOKEN")
-MONGO_URI = os.getenv("URL")
+TOKEN = os.getenv("7375766856:AAEKEeVDdcsryYx3v2_hfoCEHw0M1fx3G-Y")
+MONGO_URI = os.getenv("mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal")
 
 FORWARD_CHANNEL_ID = -1001826672472
 CHANNEL_ID = -1001826672472
