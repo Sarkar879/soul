@@ -13,16 +13,16 @@ from threading import Thread
 
 loop = asyncio.get_event_loop()
 
-TOKEN = '8172103064:AAEOMgczDi58vqWblrAFHr-n5UA0EI59qDM'
-MONGO_URI = 'mongodb+srv://rishi:ipxkingyt@rishiv.ncljp.mongodb.net/?retryWrites=true&w=majority&appName=rishiv'
-FORWARD_CHANNEL_ID = -1002156421934
-CHANNEL_ID = -1002156421934
-error_channel_id = -1002156421934
+TOKEN = '7114207827:AAFD1_RrCziYGNFqrVCW2idxWLXVFhOgKZg'
+MONGO_URI = 'mongodb+srv://Bishal:Bishal@bishal.dffybpx.mongodb.net/?retryWrites=true&w=majority&appName=Bishal'
+FORWARD_CHANNEL_ID = -1001826672472
+CHANNEL_ID = -1001826672472
+error_channel_id = -1001826672472
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
-db = client['rishi']
+db = client['Bishal']
 users_collection = db.users
 
 bot = telebot.TeleBot(TOKEN)
