@@ -27,7 +27,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 # Database connection
 client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
-db = client['rishi']
+db = client['Bishal']
 users_collection = db.users
 
 # Initialize bot
