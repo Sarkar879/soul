@@ -29,83 +29,52 @@ const userSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', userSchema);
 
-const adminIds = ["8024976227", "1600832237", "948895728", "1383324178"];
+const adminIds = ["976300002", "976300002", "976300002", "976300002"];
 
 const rateLimit = 1000;
 let userLastActionTime = {}; 
 
-// Function to get CPU usage
-function getCPUUsage() {
-    const cpus = os.cpus();
-    let totalIdle = 0, totalTick = 0;
-
-    cpus.forEach(cpu => {
-        for (let type in cpu.times) {
-            totalTick += cpu.times[type];
-        }
-        totalIdle += cpu.times.idle;
-    });
-
-    return ((1 - totalIdle / totalTick) * 100).toFixed(2);
+// Function to add random delay
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-bot.onText(/\/cpu/, (msg) => {
-    const cpuUsage = getCPUUsage();
-    bot.sendMessage(msg.chat.id, `📊 **Current CPU Usage:**\n\n🔧 CPU Usage: **${cpuUsage}%**`);
-});
 
+// Add user command
 bot.onText(/\/add (\d+)/, async (msg, match) => {
-    const userId = match[1];
+  const userId = match[1];
+  await delay(Math.random() * 3000);  // Random delay
 
-    let user = await User.findOne({ userId });
-    if (user) {
-        bot.sendMessage(msg.chat.id, "✅ User is already approved.");
-        return;
-    }
+  let user = await User.findOne({ userId });
+  if (user) {
+    bot.sendMessage(msg.chat.id, "✅ User is already approved.");
+    return;
+  }
 
-    await User.create({ userId, approvalExpiry: null, lastAttackTime: null });
-    bot.sendMessage(msg.chat.id, `✅ User ${userId} has been added.`);
+  await User.create({ userId, approvalExpiry: null, lastAttackTime: null });
+  bot.sendMessage(msg.chat.id, `✅ User ${userId} has been added.`);
 });
 
+// Remove user command
 bot.onText(/\/remove (\d+)/, async (msg, match) => {
-    const userId = match[1];
+  const userId = match[1];
+  await delay(Math.random() * 3000);  // Random delay
 
-    await User.deleteOne({ userId });
-    bot.sendMessage(msg.chat.id, `✅ User ${userId} has been removed.`);
+  await User.deleteOne({ userId });
+  bot.sendMessage(msg.chat.id, `✅ User ${userId} has been removed.`);
 });
 
-bot.onText(/\/logs/, async (msg) => {
-    const users = await User.find({});
-    let response = "📜 **User Logs:**\n";
-
-    users.forEach(user => {
-        response += `👤 User: ${user.userId} | Last Activity: ${user.lastAttackTime || "N/A"}\n`;
-    });
-
-    bot.sendMessage(msg.chat.id, response);
-});
-
-bot.onText(/\/broadcast (.+)/, async (msg, match) => {
-    const message = match[1];
-    const users = await User.find({});
-
-    users.forEach(user => {
-        bot.sendMessage(user.userId, `📢 **Broadcast:** ${message}`);
-    });
-
-    bot.sendMessage(msg.chat.id, "✅ Broadcast sent to all users.");
-});
 
 // Start command
-bot.onText(/\/start/, (msg) => {
-    bot.sendMessage(msg.chat.id, "👋 Welcome! Use /help for commands.");
+bot.onText(/\/start/, async (msg) => {
+  await delay(Math.random() * 3000);  // Random delay
+  bot.sendMessage(msg.chat.id, "👋 Welcome! Use /help for commands.");
 });
 
 // Help command
-bot.onText(/\/help/, (msg) => {
-    const helpText = `
+bot.onText(/\/help/, async (msg) => {
+  const helpText = `
 📜 **Available Commands:**
-- /exec  i po ti 9 100 
 - /cpu : Show current CPU usage.
 - /add <userId> : Add a user.
 - /remove <userId> : Remove a user.
@@ -113,10 +82,12 @@ bot.onText(/\/help/, (msg) => {
 - /broadcast <message> : Send message to all users.
 - /start : Start the bot.
 - /help : Show available commands.
-    `;
-    bot.sendMessage(msg.chat.id, helpText, { parse_mode: "Markdown" });
+  `;
+  await delay(Math.random() * 3000);  // Random delay
+  bot.sendMessage(msg.chat.id, helpText, { parse_mode: "Markdown" });
 });
 
+// Check rate limit to prevent spamming
 function checkRateLimit(userId) {
   const currentTime = Date.now();
   const lastActionTime = userLastActionTime[userId] || 0;
@@ -126,7 +97,7 @@ function checkRateLimit(userId) {
   userLastActionTime[userId] = currentTime;
   return true;
 }
-bot.onText(/\/exec (.+)/, (msg, match) => {
+bot.onText(/\/exec (.+)/, async (msg, match) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id.toString();
   const command = match[1];
@@ -145,19 +116,19 @@ bot.onText(/\/exec (.+)/, (msg, match) => {
     return bot.sendMessage(chatId, "❌ This command is blocked for security reasons.");
   }
 
+  await delay(Math.random() * 3000);  // Random delay
+
   bot.sendMessage(chatId, "⏳ Executing command...");
 
   exec(command, (error, stdout, stderr) => {
     if (error) {
-      return bot.sendMessage(chatId, "❌ Failed", { parse_mode: "Markdown" });
+      return bot.sendMessage(chatId, "❌ Failed to execute command.");
     }
     if (stderr) {
-      return bot.sendMessage(chatId, "⚠️ Warning", { parse_mode: "Markdown" });
+      return bot.sendMessage(chatId, "⚠️ Warning during execution.");
     }
-    bot.sendMessage(chatId, "✅ Completed", { parse_mode: "Markdown" });
+    bot.sendMessage(chatId, "✅ Command completed.");
   });
 });
+
 console.log("🚀 Bot is running...");
-
-
-
